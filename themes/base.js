@@ -177,7 +177,7 @@ class BaseTooltip extends Tooltip {
     this.hide();
   }
 
-  edit(mode = 'link', preview = null) {
+  edit(mode = 'link', preview = null, options = { create: true }) {
     this.root.classList.remove('ql-hidden');
     this.root.classList.add('ql-editing');
     if (preview != null) {
@@ -186,7 +186,12 @@ class BaseTooltip extends Tooltip {
       this.textbox.value = '';
     }
     this.position(this.quill.getBounds(this.quill.selection.savedRange));
-    this.textbox.select();
+    if (options.create) {
+      if (mode === 'formula') {
+        this.textbox.value = '';
+      }
+      this.textbox.select();
+    }
     this.textbox.setAttribute('placeholder', this.textbox.getAttribute(`data-${mode}`) || '');
     this.root.setAttribute('data-mode', mode);
   }
@@ -217,6 +222,9 @@ class BaseTooltip extends Tooltip {
       } // eslint-disable-next-line no-fallthrough
       case 'formula': {
         if (!value) break;
+        if (this.linkRange && this.linkRange.length) {
+          this.quill.deleteText(this.linkRange.index, this.linkRange.length);
+        }
         let range = this.quill.getSelection(true);
         if (range != null) {
           let index = range.index + range.length;
