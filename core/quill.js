@@ -4,7 +4,7 @@ import extend from 'extend';
 import Editor from './editor';
 import Emitter from './emitter';
 import Module from './module';
-import Selection, { Range } from './selection';
+import { Range } from '../modules/selection';
 import instances from './instances';
 import logger from './logger';
 import Theme from './theme';
@@ -86,8 +86,8 @@ class Quill {
       emitter: this.emitter,
     });
     this.editor = new Editor(this.scroll);
-    this.selection = new Selection(this.scroll, this.emitter);
     this.theme = new this.options.theme(this, this.options); // eslint-disable-line new-cap
+    this.selection = this.theme.addModule('selection');
     this.keyboard = this.theme.addModule('keyboard');
     this.clipboard = this.theme.addModule('clipboard');
     this.history = this.theme.addModule('history');
@@ -466,6 +466,7 @@ function expandConfig(container, userConfig) {
         clipboard: true,
         keyboard: true,
         history: true,
+        selection: true,
         uploader: true,
       },
     },

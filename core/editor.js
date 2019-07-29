@@ -3,7 +3,7 @@ import equal from 'deep-equal';
 import extend from 'extend';
 import Delta, { AttributeMap } from 'quill-delta';
 import { LeafBlot } from 'parchment';
-import { Range } from './selection';
+import { Range } from '../modules/selection';
 import CursorBlot from '../blots/cursor';
 import Block, { BlockEmbed, bubbleFormats } from '../blots/block';
 import Break from '../blots/break';
